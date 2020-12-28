@@ -3,15 +3,17 @@ package com.codetriage.scraper;
 import java.math.BigDecimal;
 import java.text.Bidi;
 
-public class Results {
+public class Result {
 
     private String name;
     private BigDecimal price;
+    private String url;
 
-    public Results(String n, BigDecimal b)
+    public Result(String n, BigDecimal b, String u)
     {
         name = n;
         price = b;
+        url = u;
     }
 
     public void setName(String n)
@@ -31,6 +33,10 @@ public class Results {
     {
         return price;
     }
+
+    public void setURL(String u){url = u;}
+    public String getURL(){return url;}
+
 
 
 }
