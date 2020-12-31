@@ -37,6 +37,11 @@ public class Result {
     public void setURL(String u){url = u;}
     public String getURL(){return url;}
 
+    public String toString()
+    {
+        return("Item name: " + name + "\n Item price: $" + price.toString() + "\n Item URL: + " + url + "\n");
+    }
+
 
 
 }

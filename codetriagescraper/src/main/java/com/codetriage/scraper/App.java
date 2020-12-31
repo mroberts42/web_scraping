@@ -7,7 +7,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSpan;
 
 import java.math.BigDecimal;
-import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,20 +23,24 @@ public class App
 
         System.out.println("Hello World");
         String searchQuery;
+        String searchURL = "https://albuquerque.craigslist.org/search/sss?query=";
+        String finalUrl;
 
         Window w = new Window(320 , 320 , "Scraping Craigslist Albuquerque");
 
-        //Won't Work Yet, no method to set search in Window
-        /*
-        while(w.getSearch() == null)
-        {
-
-        }
-        */
 
 
+        String loop = w.getSearch();
+        while(w.getSearch() == null) ;
 
-        String searchURL = "https://albuquerque.craigslist.org/search/sss?query=nintendo";
+        searchQuery = w.getSearch();
+
+
+        finalUrl = searchURL + searchQuery;
+        // System.out.println(finalUrl);
+
+
+
 
         //object from HTMLunit
         WebClient client = new WebClient();
@@ -50,7 +53,7 @@ public class App
 
 
         try {
-            HtmlPage page = client.getPage(searchURL);
+            HtmlPage page = client.getPage(finalUrl);
             List<HtmlElement> results = (List<HtmlElement>) page.getByXPath("//li[@class='result-row']");
             if(results.isEmpty())
                 System.out.println("No results");
@@ -58,21 +61,13 @@ public class App
             {
                 for(HtmlElement x : results)
                 {
-                    HtmlAnchor item = ((HtmlAnchor) x.getFirstByXPath(".//h3[@class='result-heading']/a"));
-                    //System.out.println(x.asXml());
+                    HtmlAnchor item = ( x.getFirstByXPath(".//h3[@class='result-heading']/a"));
                     HtmlSpan price = x.getFirstByXPath(".//span[@class = 'result-price']");
 
-                    //Error: HtmlSpan cannot be cast to java.lang.String
-                    //Solution to Sting just prints the
-                    //System.out.println(price.asText());
-
-                    //System.out.println(item.asText());
-                    //String url = item.getHrefAttribute();
-                    //System.out.println(url);
-                    Result temp = new Result(item.asText(), BigDecimal.valueOf(0.42), item.getHrefAttribute());
+                    Result temp = new Result(item.asText(), new BigDecimal(price.asText().substring(1, price.asText().length())), item.getHrefAttribute());
 
                     Results.add(temp);
-                    System.out.println(temp.getPrice().toString());
+                    System.out.println(temp.toString());
 
                 }
             }
